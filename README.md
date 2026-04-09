@@ -36,6 +36,21 @@ chmod +x install_wg_export.sh
 ```bash
 ./install_wg_export.sh
 ```
+Method 2: FreeBSD Package Install (.pkg)
+Because this tool is also built as a self-contained FreeBSD package, you can install it cleanly using the native pkg manager.
+
+```bash
+pkg add https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0/pfSense-pkg-wg-export-1.0.pkg
+```
+
+(Note: The firewall will automatically install the files, register the package, and restart the web interface to apply the new menu links).
+
+Uninstallation
+If you installed using the FreeBSD package (Method 2), you can completely remove the tool, delete the menu links, and clean up the pfSense database at any time by running:
+
+```bash
+pkg delete pfSense-pkg-wg-export
+```
 
 📖 How to Use
 -----------------------------------------------------------------------------------------------------------------------------------------
