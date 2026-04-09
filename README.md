@@ -1,42 +1,38 @@
-# pfSense WireGuard Peer Export
-
+pfSense WireGuard Peer Export
 A standalone, highly advanced PHP utility and dashboard widget that makes it incredibly easy to export WireGuard client configs and QR codes directly from pfSense, saving you time on mobile and desktop VPN provisioning.
 
-While pfSense provides excellent built-in tools for OpenVPN client exports, provisioning WireGuard clients can still be a manual, tedious process. This lightweight utility bridges that gap by providing a seamless GUI to generate keys, build `.conf` files, configure split tunnels, and render mobile-ready QR codes without ever leaving your dashboard.
+While pfSense provides excellent built-in tools for OpenVPN client exports, provisioning WireGuard clients can still be a manual, tedious process. This lightweight utility bridges that gap by providing a seamless GUI to generate keys, build .conf files, configure split tunnels, and render mobile-ready QR codes without ever leaving your dashboard.
 
----
+✨ Features
+One-Click Mobile Provisioning: Instantly generates scannable QR codes for Android and iOS WireGuard apps right on your screen.
 
-## ✨ Features
+Bulk Client Export (ZIP): Deploying a fleet of devices? Download every single peer configuration packaged neatly into a single .zip file with one click (processed client-side, zero firewall overhead).
 
-* **One-Click Mobile Provisioning:** Instantly generates scannable QR codes for Android and iOS WireGuard apps right on your screen.
-* **Bulk Client Export (ZIP):** Deploying a fleet of devices? Download every single peer configuration packaged neatly into a single `.zip` file with one click (processed client-side, zero firewall overhead).
-* **Advanced Tunnel Controls:** Live-edit tunnel parameters before exporting. Easily override the Endpoint IP/Hostname, configure Split Tunneling (Allowed IPs), and adjust Persistent Keepalive settings on the fly.
-* **Native Keypair Generation:** Includes a built-in cryptographic engine that safely generates Curve25519 Private/Public keypairs using the firewall's native OS-level `wg` binaries.
-* **Future-Proof Architecture:** Dynamically locates internal XML databases and binary paths, making it fully compatible with legacy pfSense builds as well as cutting-edge FreeBSD 15 (pfSense 2.8.x+) development snapshots.
-* **Native Menu Integration:** The deployment script securely injects the tool directly into the official pfSense VPN dropdown menu.
-* **Custom Dashboard Widget:** Includes an optional widget so you can access the exporter directly from your main pfSense login screen.
+Advanced Tunnel Controls: Live-edit tunnel parameters before exporting. Easily override the Endpoint IP/Hostname, configure Split Tunneling (Allowed IPs), and adjust Persistent Keepalive settings on the fly.
 
----
+Native Keypair Generation: Includes a built-in cryptographic engine that safely generates Curve25519 Private/Public keypairs using the firewall's native OS-level wg binaries.
 
-## 🚀 Installation
+Future-Proof Architecture: Dynamically locates internal XML databases and binary paths, making it fully compatible with legacy pfSense builds as well as cutting-edge FreeBSD 15 (pfSense 2.8.x+) development snapshots.
 
-There are two ways to install this tool on your pfSense firewall. Both methods require you to connect to your pfSense shell via SSH (or use **Diagnostics > Command Prompt** in the web interface).
+Native Menu Integration: The deployment script securely injects the tool directly into the official pfSense VPN dropdown menu.
 
-### Method 1: Automated Install (Recommended)
+Custom Dashboard Widget: Includes an optional widget so you can access the exporter directly from your main pfSense login screen.
+
+🚀 Installation
+There are two ways to install this tool on your pfSense firewall. Both methods require you to connect to your pfSense shell via SSH (or use Diagnostics > Command Prompt in the web interface).
+
+Method 1: Automated Install (Recommended)
 You can deploy the export tool, the dashboard widget, and the native menu link in seconds using the included deployment script.
 
-```bash
-curl -O [https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/install_wg_export.sh](https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/install_wg_export.sh)
-
+Bash
+curl -O https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/install_wg_export.sh
 chmod +x install_wg_export.sh
-
 ./install_wg_export.sh
-
-####Method 2: FreeBSD Package Install (.txz)
+Method 2: FreeBSD Package Install (.txz)
 Because this tool is also built as a self-contained FreeBSD package, you can install it cleanly using the native pkg manager.
 
 Bash
-pkg add [https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0/pfSense-pkg-wg-export-1.0.txz](https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0/pfSense-pkg-wg-export-1.0.txz)
+pkg add https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0/pfSense-pkg-wg-export-1.0.txz
 (Note: The firewall will automatically install the files, register the package, and restart the web interface to apply the new menu links).
 
 Uninstallation
