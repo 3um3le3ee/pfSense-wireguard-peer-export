@@ -42,6 +42,9 @@ Because this tool is also built as a self-contained FreeBSD package, you can ins
 ```bash
 curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/pfSense-pkg-wg-export-0.1.pkg
 ```
+```bash
+pkg add -f pfSense-pkg-wg-export-0.1.pkg
+```
 
 (Note: The firewall will automatically install the files, register the package, and restart the web interface to apply the new menu links).
 
