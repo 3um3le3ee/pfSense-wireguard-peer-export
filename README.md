@@ -59,7 +59,7 @@ The plugin includes a native pfSense Dashboard widget for real-time monitoring a
 ### How to Enable:
 1. Go to your pfSense **Dashboard** (Status > Dashboard).
 2. Click the **Add Widget** (+) icon at the top right.
-3. Select **WireGuard Peer Export** from the list.
+3. Select **Wg Peer Export** from the list.
 4. Click **Save Settings** at the top of the dashboard.
 
 ### Widget Features:
