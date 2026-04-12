@@ -15,8 +15,21 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
 - **100% Offline QR Code:** Uses a locally installed `qrcode.min.js` library — no external CDN calls.
 - **Stateless Key Handling:** Private keys are generated on-the-fly and never stored in pfSense config or logs.
 
-## 🚀 Quick Start (Manual Install)
+## 🚀 Quick Start
 --
+## 📦 Package Installation (Recommended)
+
+install the tool as a native pfSense package (which allows for cleaner management and persistence), use the following commands. This will download the pre-compiled `.pkg` and install it using the system's package manager.
+
+```bash
+# 1. Download the package
+curl -LO [https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v0.4.2/pfSense-pkg-wg-export-0.4.2.pkg](https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v0.4.2/pfSense-pkg-wg-export-0.4.2.pkg)
+```
+```bash
+# 2. Install the package
+pkg add pfSense-pkg-wg-export-0.4.2.pkg
+```
+## 🚀 Quick Start (Manual Install)
 SSH into your pfSense (option 8 for shell), then download and run the installer:
 
 ```bash
