@@ -16,7 +16,7 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
 - **Stateless Key Handling:** Private keys are generated on-the-fly and never stored in pfSense config or logs.
 
 ## 🚀 Quick Start
---
+
 ## 📦 Package Installation (Recommended)
 
 install the tool as a native pfSense package (which allows for cleaner management and persistence), use the following commands. This will download the pre-compiled `.pkg` and install it using the system's package manager.
