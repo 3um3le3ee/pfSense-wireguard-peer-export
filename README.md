@@ -22,7 +22,18 @@ Custom Dashboard Widget: Includes an optional widget so you can access the expor
 
 🚀 Installation
 -----------------------------------------------------------------------------------------------------------------------------------------
-Automated Install: You can deploy the export tool, the dashboard widget, and the native menu link in seconds using the included deployment script.
+Method 1: FreeBSD Package Install (.pkg)
+Because this tool is also built as a self-contained FreeBSD package, you can install it cleanly using the native pkg manager.
+
+```bash
+curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/pfSense-pkg-wg-export-0.2.pkg
+```
+```bash
+pkg add -f pfSense-pkg-wg-export-0.2.pkg
+```
+
+Method 2: Automated Install Script
+You can deploy the export tool, the dashboard widget, and the native menu link in seconds using the included deployment script.
 
 Connect to your pfSense firewall via SSH (or use Diagnostics > Command Prompt).
 
@@ -35,15 +46,6 @@ chmod +x install_wg_export.sh
 ```
 ```bash
 ./install_wg_export.sh
-```
-Method 2: FreeBSD Package Install (.pkg)
-Because this tool is also built as a self-contained FreeBSD package, you can install it cleanly using the native pkg manager.
-
-```bash
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/pfSense-pkg-wg-export-0.1.pkg
-```
-```bash
-pkg add -f pfSense-pkg-wg-export-0.1.pkg
 ```
 
 (Note: The firewall will automatically install the files, register the package, and restart the web interface to apply the new menu links).
