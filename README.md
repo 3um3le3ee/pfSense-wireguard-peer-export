@@ -39,8 +39,7 @@ A new **Peer Export** tab will appear under **VPN > WireGuard**.
 ## 🗑️ Uninstall
 
 ```bash
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/uninstall.sh
-chmod +x uninstall.sh && ./uninstall.sh
+pkg delete -y pfSense-pkg-wg-export
 ```
 ## 📊 Dashboard Widget
 
