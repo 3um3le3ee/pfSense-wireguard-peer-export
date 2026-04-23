@@ -99,7 +99,7 @@ The page also lists all configured peers with their tunnel, public key, allowed 
 
 - **`uninstall.sh`** Uninstaller — removes all files, scrubs the XML database, and unpatches UI tabs cleanly.
 
-## 🔒 Security & Architecture (v0.4.2 Updates)
+## 🔒 Security & Architecture (v1.0.5 Updates)
 
 This tool was designed with strict enterprise firewall security in mind:
 
