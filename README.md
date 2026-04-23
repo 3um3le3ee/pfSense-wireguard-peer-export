@@ -17,7 +17,7 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
 
 ## 🚀 Quick Start
 
-## 📦 Package Installation (Recommended)
+## 📦 Package Installation
 
 install the tool as a native pfSense package (which allows for cleaner management and persistence), use the following commands. This will download the pre-compiled `.pkg` and install it using the system's package manager.
 
