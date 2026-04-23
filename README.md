@@ -25,23 +25,13 @@ SSH into your pfSense (option 8 for shell), then download and run the installer:
 
 **1. Download the package**
 ```bash
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/pfSense-pkg-wg-export-0.4.2.pkg
+curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/pfSense-pkg-wg-export.pkg
 ```
 **2. Install the package**
 ```bash
-pkg add pfSense-pkg-wg-export-0.4.2.pkg
+pkg add pfSense-pkg-wg-export.pkg
 ```
 
-### 🛠️ Manual Installation
-
-SSH into your pfSense (option 8 for shell), then download and run the installer:
-
-```bash
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/install_wg_export.sh
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/vpn_wg_export.php
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/wg_client_export.widget.php
-chmod +x install_wg_export.sh && ./install_wg_export.sh
-```
 *Note: The installer will automatically download the offline QR code library to your firewall during setup.*
 
 A new **Peer Export** tab will appear under **VPN > WireGuard**.
