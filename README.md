@@ -1,6 +1,8 @@
-pfSense WireGuard Peer Export
+pfSense WireGuard Peer Export - FreeBSD 26 Compatible
 --
 **One click to add a peer, get the `.conf` file, and generate a QR code. No more configuring both sides manually.**
+
+**✅ Now compatible with FreeBSD 26 (pkg 2.6.x) and pfSense 2.7.x+**
 
 Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, manually generate keys, copy the public key back, hand-craft the client config, and figure out the endpoint/subnet yourself. This plugin turns all of that into a single step — click **Add New Peer**, fill in a name, and you get a ready-to-use config file and QR code while the peer is automatically registered on the firewall.
 
@@ -19,20 +21,27 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
 
 ## 📦 Package Installation
 
-install the tool as a native pfSense package (which allows for cleaner management and persistence), use the following commands. This will download the pre-compiled `.pkg` and install it using the system's package manager.
+### FreeBSD 26 / pfSense 2.7.x+ (Latest)
 
-SSH into your pfSense (option 8 for shell), then download and run the installer:
+Install the tool as a native package using the updated pkg 2.6.x format:
+
+SSH into your system, then download and run the installer:
 
 **1. Download the package**
 ```bash
-curl -LO https://raw.githubusercontent.com/3um3le3ee/pfSense-wireguard-peer-export/main/pfSense-pkg-wg-export.pkg
+curl -LO https://raw.githubusercontent.com/Rex-odus/pfSense-wireguard-peer-export/freebsd-26-support/pfSense-pkg-wg-export.pkg
 ```
+
 **2. Install the package**
 ```bash
 pkg add pfSense-pkg-wg-export.pkg
 ```
 
-*Note: The installer will automatically download the offline QR code library to your firewall during setup.*
+*Note: The installer will automatically download the offline QR code library during setup.*
+
+### FreeBSD 24 / Legacy Systems
+
+For older FreeBSD 24 systems, use the v1.0.5 release from the original repository.
 
 A new **Peer Export** tab will appear under **VPN > WireGuard**.
 
@@ -41,12 +50,13 @@ A new **Peer Export** tab will appear under **VPN > WireGuard**.
 ```bash
 pkg delete -y pfSense-pkg-wg-export
 ```
+
 ## 📊 Dashboard Widget
 
-The plugin includes a native pfSense Dashboard widget for real-time monitoring and quick management of your WireGuard peers.
+The plugin includes a native Dashboard widget for real-time monitoring and quick management of your WireGuard peers.
 
 ### How to Enable:
-1. Go to your pfSense **Dashboard** (Status > Dashboard).
+1. Go to your **Dashboard** (Status > Dashboard).
 2. Click the **Add Widget** (+) icon at the top right.
 3. Select **Wg Peer Export** from the list.
 4. Click **Save Settings** at the top of the dashboard.
@@ -56,6 +66,7 @@ The plugin includes a native pfSense Dashboard widget for real-time monitoring a
 - **Data Usage:** Displays total Transmit/Receive bytes for every active peer.
 - **Quick Export:** A one-click dropdown to instantly download a `.conf` file for any peer without leaving the dashboard.
 - **Peer Search:** Quickly filter through long lists of peers to find a specific endpoint.
+
 ## 📖 Usage
 
 ### Add a New Peer (The Provisioning Workflow)
@@ -63,10 +74,10 @@ The plugin includes a native pfSense Dashboard widget for real-time monitoring a
 1. Go to **VPN > WireGuard > Peer Export**, click **Add New Peer**.
 2. Pick a **Target Tunnel** — Endpoint, Public Key, and AllowedIPs are filled in automatically.
 3. Enter a **Peer Description** (this will become the configuration filename).
-4. **Auto-IP Discovery:** The **Assigned IP** box will automatically calculate and suggest the next available IP address in the tunnel's subnet!
+4. **Auto-IP Discovery:** The **Assigned IP** box will automatically calculate and suggest the next available free IP address in the tunnel's subnet!
 5. Optionally set **DNS**, **Pre-Shared Key**, or switch to **Split Tunnel** mode.
 6. **Download the .conf** or **scan the QR code** on your phone.
-7. **Click Provision & Save to pfSense** — the peer is securely saved to the database and the WireGuard service is instantly synchronized in the background.
+7. **Click Provision & Save** — the peer is securely saved and the WireGuard service is instantly synchronized in the background.
 
 > ⚠️ **Download or scan before clicking Add** — the private key is generated statelessly and wiped from memory once saved.
 
@@ -80,40 +91,28 @@ The page also lists all configured peers with their tunnel, public key, allowed 
 | Feature | How this plugin simplifies it |
 | :--- | :--- |
 | **Key Management** | Keys are auto-generated on page open; no manual `wg genkey` needed. |
-| **Peer Registration** | Public keys are registered automatically on the firewall upon adding. |
+| **Peer Registration** | Public keys are registered automatically upon adding. |
 | **Tunnel Details** | Endpoint IP, Port, and Server Public Key are auto-populated from the tunnel. |
 | **IP Assignment** | **Auto-IP Engine** calculates and suggests the next available free IP. |
 | **Client Config** | Real-time preview and one-click download of the `.conf` file. |
 | **Mobile Setup** | QR code rendered instantly and **100% offline** for mobile scanning. |
 | **Workflow** | One single form configures both the firewall and the client securely. |
 
-## 📁 Files
-
-- **`pfSense-pkg-wg-export-0.4.2.pkg`** Native pfSense Package — A pre-compiled binary that handles automated file placement, system registration, and clean uninstallation via the `pkg` manager.
-
-- **`vpn_wg_export.php`** Main page — contains the peer table, Auto-IP engine, strict backend validation, and AJAX endpoints.
-
-- **`wg_client_export.widget.php`** Dashboard widget — provides live telemetry, recent connections, and a quick-export dropdown.
-
-- **`install_wg_export.sh`** Manual Installer — stages files, fetches the offline QR library, and patches native WireGuard tabs.
-
-- **`uninstall.sh`** Uninstaller — removes all files, scrubs the XML database, and unpatches UI tabs cleanly.
-
-## 🔒 Security & Architecture (v1.0.5 Updates)
+## 🔒 Security & Architecture (v1.0.6 Updates)
 
 This tool was designed with strict enterprise firewall security in mind:
 
+- **FreeBSD 26 Compatible:** Updated package manifest for pkg 2.6.x with proper shlibs tracking
 - **100% Offline & Air-Gap Safe:** The Cloudflare CDN has been removed. The `qrcode.min.js` library is installed locally on the firewall, meaning no external requests are ever made by the WebGUI.
+- **Strict CSRF Protection:** All background interactions utilize native `__csrf_magic` tokens to prevent Cross-Site Request Forgery (CSRF) attacks.
+- **Server-Side Validation:** Form inputs are heavily sanitized and validated using native `is_ipaddr()` function before writing to config.
+- **Stateless Key Management:** Private keys are generated via the native `wg` binary, sent directly to the browser, and are **never** stored in config or system logs.
 
-- **Strict CSRF Protection:** All background interactions utilize pfSense's native `__csrf_magic` tokens to prevent Cross-Site Request Forgery (CSRF) attacks.
+## 📁 Files
 
-- **Server-Side Validation:** Form inputs (like IPs and subnets) aren't just checked in the browser; the PHP backend heavily sanitizes and validates payloads using pfSense's native `is_ipaddr()` function before writing to `config.xml`.
-
-- **Stateless Key Management:** Private keys are generated via the firewall's native `wg` binary, sent directly to the browser, and are **never** stored in the pfSense config or system logs.
-
-- **Version-Aware:** Automatically detects and safely saves configurations whether you are running legacy pfSense 2.5.0 packages or modern pfSense 2.5.2/2.6/2.7+ native WireGuard integrations.
-
----
+- **`pfSense-pkg-wg-export.pkg`** Native Package — Updated for FreeBSD 26 / pkg 2.6.x compatibility
+- **`vpn_wg_export.php`** Main page — contains the peer table, Auto-IP engine, and AJAX endpoints
+- **`wg_client_export.widget.php`** Dashboard widget — provides live telemetry and quick-export dropdown
 
 ## ⚠️ Disclaimer
 
