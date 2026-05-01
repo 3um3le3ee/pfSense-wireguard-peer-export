@@ -94,7 +94,9 @@ The page also lists all configured peers with their tunnel, public key, allowed 
 
 ## 📁 Files
 
-- **`pfSense-pkg-wg-export-0.4.2.pkg`** Native pfSense Package — A pre-compiled binary that handles automated file placement, system registration, and clean uninstallation via the `pkg` manager.
+- **`pfSense-pkg-wg-export-1.0.6.pkg`** Native pfSense Package — A pre-compiled binary that handles automated file placement, system registration, and clean uninstallation via the `pkg` manager.
+
+- **`vpn_wg_setup.php`** Setup page — Setup WireGuard tunnel with one click, auto adds friewll/NAT rules.
 
 - **`vpn_wg_export.php`** Main page — contains the peer table, Auto-IP engine, strict backend validation, and AJAX endpoints.
 
