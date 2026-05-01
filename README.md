@@ -6,14 +6,19 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
 
 ## ✨ Features
 
-- **One-Click Peer Provisioning:** Instantly creates the peer on the firewall, generates keys, and delivers a ready-to-import `.conf` + QR code.
-- **Auto-IP Discovery Engine:** Automatically calculates and suggests the next available IP address in the tunnel subnet.
-- **Real-Time Config Preview:** Full `.conf` file and offline QR code generated instantly in the browser.
-- **Bulk Export Support:** Download all peers at once as `.zip` or `.tar.gz` with one click.
-- **Live Status Dashboard:** See tunnel, public key, Allowed IPs, and online/offline status for every peer.
-- **Split Tunnel & DNS Options:** Easy toggles for full-tunnel vs split-tunnel and custom DNS.
-- **100% Offline QR Code:** Uses a locally installed `qrcode.min.js` library — no external CDN calls.
-- **Stateless Key Handling:** Private keys are generated on-the-fly and never stored in pfSense config or logs.
+* **One-Click Peer Provisioning:** Instantly creates the peer on the firewall, generates keys, and delivers a ready-to-import `.conf` + QR code.
+* **Auto-Tunnel Setup Wizard:** Deploy entirely new WireGuard tunnels in seconds directly from the UI, completely bypassing the complex manual interface assignment process.
+* **Automated Firewall & NAT Routing:** Automatically generates required inbound/outbound firewall rules and injects Outbound NAT mappings so traffic routes perfectly immediately upon tunnel creation.
+* **HA Sync Wizard:** Push configurations and automatically synchronize newly provisioned peers to a backup High Availability pfSense node securely over XMLRPC.
+* **Auto-IP Discovery Engine:** Automatically calculates and suggests the next available IP address in the tunnel subnet.
+* **Smart Endpoint Auto-Discovery:** Automatically detects if your router is behind a Double NAT and fetches your true public IP to ensure 5G cellular clients can always connect.
+* **Real-Time Config Preview:** Full `.conf` file and offline QR code generated instantly in the browser.
+* **Bulk Export Support:** Download all peers at once as `.zip` or `.tar.gz` with one click.
+* **Live Status Dashboard:** See tunnel, public key, Allowed IPs, and online/offline status for every peer.
+* **Advanced Allowed IPs & DNS Options:** Granular controls for Full Tunnel vs. Split Tunnel (LAN Only) routing, alongside custom DNS settings.
+* **100% Offline QR Code:** Uses a locally installed `qrcode.min.js` library — no external CDN calls.
+* **Stateless Key Handling:** Private keys are generated on-the-fly and never stored in the pfSense config or system logs.
+* **pfSense 2.8.1 / FreeBSD 15 Ready:** Native `.pkg` optimized for modern OS architectures with highly resilient UI integration.
 
 ## 🚀 Quick Start
 
