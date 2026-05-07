@@ -1,0 +1,5 @@
+{
+  "version": "1.0.8",
+  "url": "https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0.8/pfSense-pkg-wg-export-1.0.8.pkg",
+  "notes": "Fixed a minor bug and added a new feature."
+}
