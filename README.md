@@ -1,151 +1,160 @@
 pfSense WireGuard Peer Export
 =============================
 
-One click to add a peer, get the `.conf` file, and generate a QR code. No more configuring both sides manually.
+One click to add a peer, get the .conf file, and generate a QR code. No more configuring both sides manually.
 
-Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, manually generate keys, copy the public key back, hand-craft the client config, and figure out the endpoint/subnet yourself. This plugin turns all of that into a single step --- click **Add New Peer**, fill in a name, and you get a ready-to-use config file and QR code while the peer is automatically registered on the firewall.
+Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, manually generate keys, copy the public key back, hand-craft the client config, and figure out the endpoint/subnet yourself. This plugin turns all of that into a single step — click **Add New Peer**, fill in a name, and you get a ready-to-use config file and QR code while the peer is automatically registered on the firewall.
 
 ### ✨ Features
 
--   **One-Click Peer Provisioning:** Instantly creates the peer on the firewall, generates keys, and delivers a ready-to-import `.conf` + QR code.
-
--   **Expiration & Identity Sync Daemon:** A dedicated background cron job automatically disables peers when they reach a configured expiration date. It also syncs with LDAP/Local User accounts (using the `ad_sync:` prefix) to revoke VPN access if the system account is missing or disabled.
-
--   **Live Telemetry & Monitoring:** The main dashboard table now displays live Receive (Rx) and Transmit (Tx) data usage in megabytes for each connected peer.
-
--   **Advanced Peer Management:** Administrators can easily perform a "Key Rotation" to revoke access and generate fresh keys, "Kill Connection" to instantly drop a peer from the kernel, or "Delete Peer" to permanently erase them.
-
--   **Email Configuration Delivery:** Directly email `.conf` configuration files to end-users utilizing the native pfSense SMTP engine.
-
--   **Bulk CSV Import:** Rapidly mass-provision peers by pasting a list of names and IP addresses (`Name, IPAddress`) into the new Bulk CSV modal.
-
--   **Global Security Policies:** Enforce mandatory Pre-Shared Keys (PSK) for all new peers and configure fallback subnets for split tunneling.
-
--   **Resilient HA Sync Wizard:** Securely push peers to a backup node over XMLRPC with a new Strict TLS toggle. Failed sync attempts are automatically saved to a background queue (`/var/db/wgx_ha_queue.json`) and retried by the daemon.
-
--   **Auto-Tunnel Setup Wizard:** Deploy entirely new WireGuard tunnels in seconds, now featuring a dropdown menu to explicitly map Outbound NAT rules to a specific interface.
-
--   **Auto-IP Discovery Engine:** Automatically calculates and suggests the next available IP address in the tunnel subnet.
-
--   **Smart Endpoint Auto-Discovery:** Automatically detects if your router is behind a Double NAT and fetches your true public IP to ensure 5G cellular clients can always connect.
-
--   **100% Offline QR Code:** Uses a locally installed `qrcode.min.js` library with built-in dependency validation --- no external CDN calls.
-
--   **Stateless Key Handling:** Private keys are generated on-the-fly and never stored in the pfSense config or system logs.
-
-* * * * *
+*   **Visual Telemetry & NOC Dashboard \[NEW\]:** A dedicated Network Operations Center (NOC) dashboard featuring live Rx/Tx bandwidth charts, IP subnet exhaustion pie charts, a 24-hour aggregated usage trend chart, and a live top talkers data table.
+    
+*   **Auto-Tunnel Setup Wizard \[NEW\]:** Deploy entirely new WireGuard tunnels from scratch in seconds. It automatically handles key generation, interface mapping, firewall rules, and Outbound NAT.
+    
+*   **One-Click Peer Provisioning:** Instantly creates the peer on the firewall, generates keys, and delivers a ready-to-import .conf + QR code.
+    
+*   **Dual-Stack IPv4/IPv6 Support \[NEW\]:** The Auto-Setup Wizard now fully supports IPv6. You can create IPv6-only tunnels or dual-stack tunnels with both primary and secondary IP addresses.
+    
+*   **Smart IP Allocation & Conflict Prevention \[NEW\]:** The auto-IP engine now uses a proper free-list allocator that scans the tunnel subnet to find the first genuinely free IP address, cleanly filling gaps left by previously deleted peers. It also proactively blocks provisioning if an IP conflict is detected.
+    
+*   **Import .conf Files \[NEW\]:** Upload an existing WireGuard configuration file, and the UI will automatically parse the keys, IPs, and endpoints to pre-fill the provisioning modal.
+    
+*   **Expiration, Identity Sync & Telemetry Daemon:** A dedicated background cron job automatically disables peers when they reach a configured expiration date. It syncs with LDAP/Local User accounts (using the ad\_sync: prefix) to revoke VPN access if the system account is disabled, and safely archives bandwidth telemetry for the dashboard.
+    
+*   **Auto-Update Checker \[NEW\]:** A background checker (configurable for Daily, Weekly, or Never) alerts you to new versions with a one-click Download & Install Now banner in the UI.
+    
+*   **Advanced Peer Management:** Administrators can easily perform a Key Rotation to revoke access and generate fresh keys, Kill Connection to instantly drop a peer from the kernel, or Delete Peer to permanently erase them.
+    
+*   **Email Configuration Delivery:** Directly email .conf configuration files to end-users utilizing the native pfSense SMTP engine.
+    
+*   **Bulk CSV Import:** Rapidly mass-provision peers by pasting a list of names and IP addresses into the Bulk CSV modal.
+    
+*   **Global Security Policies:** Enforce mandatory Pre-Shared Keys (PSK) for all new peers and configure fallback subnets for split tunneling.
+    
+*   **Resilient HA Sync Wizard:** Securely push peers to a backup node over XMLRPC with a Strict TLS toggle. Failed sync attempts are automatically saved to a background queue and retried by the daemon.
+    
+*   **Self-Healing & Persistence \[NEW\]:** Auto-Bootstrap persistence survives pfSense firmware upgrades, pre-install backups protect your config during updates, and aggressive UI tab healing ensures native menus stay intact.
+    
+*   **100% Offline Assets:** Uses locally installed JavaScript libraries for QR codes and Charts with built-in dependency validation — no external CDN calls.
+    
 
 ### 🚀 Quick Start
 
-#### 📦 Package Installation
+#### Package Installation
 
-To install the tool as a native pfSense package (which allows for cleaner management and persistence), use the following commands. This will download the pre-compiled `.pkg` and install it using the system's package manager.
-
-SSH into your pfSense (option 8 for shell), then download and run the installer:
+To install the tool as a native pfSense package, SSH into your pfSense (option 8 for shell), and run the following command to install the local package:
 
 **1\. Download the package**
 ```bash
-curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.0.7.pkg
+curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.0.8.pkg
 ```
+
 **2\. Install the package**
 ```bash
-pkg add -fM pfSense-pkg-wg-export-1.0.7.pkg
+pkg add -fM pfSense-pkg-wg-export-1.0.8.pkg
 ```
-*Note: The installer will automatically download the offline QR code library to your firewall during setup. A new **Peer Export** tab will appear under **VPN > WireGuard**.*
 
-#### 🗑️ Uninstall
+_Note: The installer will automatically download the offline QR code and Chart libraries to your firewall during setup. New tabs will appear under VPN > WireGuard._
+
+#### Uninstall
+
+To remove the package and clean up all integration files, run:
 ```bash
-pkg delete -y pfSense-pkg-wg-export-1.0.7.pkg
+pkg delete pfSense-pkg-wg-export-1.0.8.pkg
 ```
-* * * * *
 
 ### 📊 Dashboard Widget
 
-Version 1.0.7 includes a streamlined native pfSense Dashboard widget (`wg_peer_export.widget.php`) for quick access.
+Version 1.0.8 includes a streamlined native pfSense Dashboard widget for quick access.
 
 **How to Enable:**
 
 1.  Go to your pfSense **Dashboard** (Status > Dashboard).
-
+    
 2.  Click the **Add Widget** (+) icon at the top right.
-
+    
 3.  Select **Wg Peer Export** from the list.
-
+    
 4.  Click **Save Settings** at the top of the dashboard.
+    
 
 **Widget Features:**
 
--   **Overview Stats:** Visually displays the total number of configured tunnels and provisioned peers.
-
--   **Quick Actions:** Provides one-click shortcut buttons to instantly access the Auto-Setup wizard or Manage Peers dashboard.
-
-* * * * *
+*   **Overview Stats:** Visually displays the total number of configured tunnels and provisioned peers.
+    
+*   **Quick Actions:** Provides one-click shortcut buttons to instantly access the new Visual Telemetry Dashboard, Auto-Setup wizard, or Manage Peers screen.
+    
 
 ### 📖 Usage
 
-#### Add a New Peer (The Provisioning Workflow)
+#### 1\. Deploy a New Tunnel (One-Click Setup)
 
-1.  Go to **VPN > WireGuard > Peer Export**, click **Add New Peer**.
+If you are starting from scratch and do not have a WireGuard tunnel configured yet:
 
-2.  Pick a **Target Tunnel** --- Endpoint, Public Key, and AllowedIPs are filled in automatically.
+1.  Go to **VPN > WireGuard > Setup**.
+    
+2.  Enter a **Tunnel Description** (e.g., Employee\_VPN) and a **Listen Port** (default: 51820).
+    
+3.  Enter your **Tunnel IPv4 Address / CIDR** (e.g., 10.10.10.1/24).
+    
+4.  _(Optional)_ Enter an **IPv6 Address / Prefix** to create a dual-stack tunnel.
+    
+5.  Select your **Outbound NAT Interface** (usually WAN) from the dropdown list.
+    
+6.  Click **Deploy Tunnel**.
+    
 
+The suite will automatically generate the server keys, create the interface, assign the IP addresses, build the necessary firewall rules to allow traffic, and create the Outbound NAT routing rules. Your tunnel is immediately ready for peers.
+
+#### 2\. Add a New Peer (The Provisioning Workflow)
+
+1.  Go to **VPN > WireGuard > Peer Export**, click **Add New Peer** (or use **Import .conf**).
+    
+2.  Pick a **Target Tunnel** — Endpoint, Public Key, and AllowedIPs are filled in automatically.
+    
 3.  Enter a **Peer Description** (this will become the configuration filename).
-
-4.  **Auto-IP Discovery:** The **Assigned IP** box will automatically calculate and suggest the next available IP address in the tunnel's subnet!
-
+    
+4.  **Auto-IP Discovery:** The Assigned IP box will automatically calculate and suggest the next truly available IP address in the tunnel's subnet.
+    
 5.  Optionally set **DNS**, **Pre-Shared Key**, an **Expiration (Days)**, or switch to **Split Tunnel** mode.
+    
+6.  Download the .conf or scan the QR code on your phone.
+    
+7.  Click **Provision & Save** — the peer is securely saved, checked for IP conflicts, and the WireGuard service is instantly synchronized in the background.
+    
 
-6.  Download the `.conf` or scan the QR code on your phone.
+_Warning: Download or scan before clicking Add — the private key is generated statelessly and wiped from memory once saved._
 
-7.  Click **Provision & Save to pfSense** --- the peer is securely saved to the database and the WireGuard service is instantly synchronized in the background.
-
-⚠️ *Download or scan before clicking Add --- the private key is generated statelessly and wiped from memory once saved.*
-
-#### Export Existing Peers & Live Management
+#### 3\. Export Existing Peers & Live Management
 
 The page lists all configured peers with their tunnel, public key, allowed IPs, live online status, and active Rx/Tx data usage.
 
--   **Export:** Click the QR code icon on any row to generate its config.
-
--   **Email:** Click the envelope icon to send the configuration profile via email.
-
--   **Rotate Keys:** Click the refresh icon to instantly revoke access and generate a fresh keypair.
-
--   **Bulk Download:** Use **Download All** to grab a `.zip` or `.tar.gz` of every peer.
-
-*Note: To prevent accidentally breaking existing tunnels, the "Generate Keys" button is safely hidden when viewing an already-provisioned peer.*
-
-* * * * *
-
-### 📁 Files
-
--   `pfSense-pkg-wg-export-1.0.7.pkg` Native pfSense Package.
-
--   `vpn_wg_setup.php` Setup page --- Setup WireGuard tunnel with one click, auto adds firewall/NAT rules.
-
--   `vpn_wg_export.php` Main page --- Contains the peer table, Live Telemetry, Email/CSV modules, and AJAX endpoints.
-
--   `wgx_expire.php` The automated background daemon handling peer expirations, LDAP identity sync, and HA queue processing.
-
--   `wg_peer_export.widget.php` Dashboard widget --- Provides high-level tunnel/peer statistics and quick links.
-
-* * * * *
+*   **Export:** Click the QR code icon on any row to generate its config.
+    
+*   **Email:** Click the envelope icon to send the configuration profile via email.
+    
+*   **Rotate Keys:** Click the refresh icon to instantly revoke access and generate a fresh keypair.
+    
+*   **Bulk Download:** Use **Download All** to grab an archive of every peer.
+    
 
 ### 🔒 Security & Architecture
 
 This tool was designed with strict enterprise firewall security in mind:
 
--   **100% Offline & Air-Gap Safe:** The `qrcode.min.js` library is installed locally on the firewall, meaning no external requests are ever made by the WebGUI.
+*   **100% Offline & Air-Gap Safe:** The required frontend libraries are installed locally on the firewall, meaning no external UI dependencies or CDN calls are ever made by the WebGUI.
+    
+*   **Hardened Admin Verification:** The authentication check strictly queries the pfSense native system configuration to verify membership in the admins group.
+    
+*   **Strict CSRF Protection:** All background interactions utilize pfSense's native tokens to prevent Cross-Site Request Forgery (CSRF) attacks.
+    
+*   **Server-Side Validation:** Form inputs are heavily sanitized, and IP conflicts are proactively blocked using pfSense's native networking functions before writing to the config.
+    
+*   **Stateless Key Management:** Private keys are generated via the firewall's native wg binary, sent directly to the browser, and are never stored in the pfSense config or system logs.
+    
+*   **Global Security Toggles:** Administrators can optionally enforce strict PSK requirements and secure HA syncs with strict TLS validation to prevent MITM attacks.
 
--   **Strict CSRF Protection:** All background interactions utilize pfSense's native `__csrf_magic` tokens to prevent Cross-Site Request Forgery (CSRF) attacks.
-
--   **Server-Side Validation:** Form inputs are heavily sanitized and validated using pfSense's native `is_ipaddr()` function before writing to `config.xml`.
-
--   **Stateless Key Management:** Private keys are generated via the firewall's native `wg` binary, sent directly to the browser, and are **never** stored in the pfSense config or system logs.
-
--   **Global Security Toggles:** Administrators can optionally enforce strict PSK requirements and secure HA syncs with strict TLS validation to prevent MITM attacks.
-
-* * * * *
+*   * * * * *
 
 **⚠️ Disclaimer**
 
