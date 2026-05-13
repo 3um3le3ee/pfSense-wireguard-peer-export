@@ -7,21 +7,21 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
 
 ### ✨ Features
 
-*   **Visual Telemetry & NOC Dashboard \[NEW\]:** A dedicated Network Operations Center (NOC) dashboard featuring live Rx/Tx bandwidth charts, IP subnet exhaustion pie charts, a 24-hour aggregated usage trend chart, and a live top talkers data table.
+*   **Visual Telemetry & NOC Dashboard:** A dedicated Network Operations Center (NOC) dashboard featuring live Rx/Tx bandwidth charts, IP subnet exhaustion pie charts, a 24-hour aggregated usage trend chart, and a live top talkers data table.
     
-*   **Auto-Tunnel Setup Wizard \[NEW\]:** Deploy entirely new WireGuard tunnels from scratch in seconds. It automatically handles key generation, interface mapping, firewall rules, and Outbound NAT.
+*   **Auto-Tunnel Setup Wizard:** Deploy entirely new WireGuard tunnels from scratch in seconds. It automatically handles key generation, interface mapping, firewall rules, and Outbound NAT.
     
 *   **One-Click Peer Provisioning:** Instantly creates the peer on the firewall, generates keys, and delivers a ready-to-import .conf + QR code.
     
-*   **Dual-Stack IPv4/IPv6 Support \[NEW\]:** The Auto-Setup Wizard now fully supports IPv6. You can create IPv6-only tunnels or dual-stack tunnels with both primary and secondary IP addresses.
+*   **Dual-Stack IPv4/IPv6 Support:** The Auto-Setup Wizard now fully supports IPv6. You can create IPv6-only tunnels or dual-stack tunnels with both primary and secondary IP addresses.
     
-*   **Smart IP Allocation & Conflict Prevention \[NEW\]:** The auto-IP engine now uses a proper free-list allocator that scans the tunnel subnet to find the first genuinely free IP address, cleanly filling gaps left by previously deleted peers. It also proactively blocks provisioning if an IP conflict is detected.
+*   **Smart IP Allocation & Conflict Prevention:** The auto-IP engine now uses a proper free-list allocator that scans the tunnel subnet to find the first genuinely free IP address, cleanly filling gaps left by previously deleted peers. It also proactively blocks provisioning if an IP conflict is detected.
     
-*   **Import .conf Files \[NEW\]:** Upload an existing WireGuard configuration file, and the UI will automatically parse the keys, IPs, and endpoints to pre-fill the provisioning modal.
+*   **Import .conf Files:** Upload an existing WireGuard configuration file, and the UI will automatically parse the keys, IPs, and endpoints to pre-fill the provisioning modal.
     
 *   **Expiration, Identity Sync & Telemetry Daemon:** A dedicated background cron job automatically disables peers when they reach a configured expiration date. It syncs with LDAP/Local User accounts (using the ad\_sync: prefix) to revoke VPN access if the system account is disabled, and safely archives bandwidth telemetry for the dashboard.
     
-*   **Auto-Update Checker \[NEW\]:** A background checker (configurable for Daily, Weekly, or Never) alerts you to new versions with a one-click Download & Install Now banner in the UI.
+*   **Auto-Update Checker:** A background checker (configurable for Daily, Weekly, or Never) alerts you to new versions with a one-click Download & Install Now banner in the UI.
     
 *   **Advanced Peer Management:** Administrators can easily perform a Key Rotation to revoke access and generate fresh keys, Kill Connection to instantly drop a peer from the kernel, or Delete Peer to permanently erase them.
     
@@ -33,9 +33,23 @@ Adding a WireGuard peer on pfSense normally means: create the peer in the GUI, m
     
 *   **Resilient HA Sync Wizard:** Securely push peers to a backup node over XMLRPC with a Strict TLS toggle. Failed sync attempts are automatically saved to a background queue and retried by the daemon.
     
-*   **Self-Healing & Persistence \[NEW\]:** Auto-Bootstrap persistence survives pfSense firmware upgrades, pre-install backups protect your config during updates, and aggressive UI tab healing ensures native menus stay intact.
+*   **Self-Healing & Persistence:** Auto-Bootstrap persistence survives pfSense firmware upgrades, pre-install backups protect your config during updates, and aggressive UI tab healing ensures native menus stay intact.
     
 *   **100% Offline Assets:** Uses locally installed JavaScript libraries for QR codes and Charts with built-in dependency validation — no external CDN calls.
+
+*   **Namespace Isolation (Bulletproof Uninstalls):** A massive under-the-hood architectural upgrade. All custom UI files and tools are now securely sandboxed in a dedicated /wgx/ directory rather than injecting directly into the native WireGuard folders. This ensures that uninstalling the tool is 100% safe and will never conflict with or break your native pfSense WireGuard GUI.
+
+*   **Zero-Touch Site-to-Site (S2S) Deployment:** A powerful new wizard allows you to instantly deploy a mesh/bridge tunnel between two pfSense firewalls. Simply enter the remote firewall's credentials, and the suite handles key generation, interface mapping, firewall rules, and routing on both sides simultaneously via XMLRPC.
+
+*   **Automated Bandwidth Throttling (QoS Alias):** The background telemetry daemon now actively monitors total data usage (Rx+Tx) per peer. If a peer exceeds your configured soft cap limit, they are automatically placed into a dynamic WGX_THROTTLED pfSense Alias, allowing you to easily apply pfSense traffic shapers or block rules.
+
+*   **Time-Based Access Scheduling:** Restrict peer access based on dynamic time schedules during provisioning. You can now easily limit specific peers to "Business Hours" (Mon-Fri, 09:00-17:00) or "Weekends Only," which is actively enforced by the expiration daemon.
+
+*   **FRR OSPF Dynamic Routing Injection:** Advanced users deploying new tunnels via the Setup Wizard can now check a box to automatically inject the new interface into the pfSense FRR OSPF package, broadcasting the new routes across your mesh network instantly.
+
+*   **Dedicated System Audit Trail:** A brand-new Audit tab has been added to the top menu. This page filters your native pfSense system logs to provide a clean, searchable history of all WireGuard Suite actions, including peer creations, deletions, key rotations, and S2S deployments.
+
+*   **Hall of Fame / Credits Page:** A dedicated, native-looking credits page accessed directly from the footer, recognizing the community testers and supporters who helped refine the suite.
     
 
 ### 🚀 Quick Start
@@ -46,12 +60,12 @@ To install the tool as a native pfSense package, SSH into your pfSense (option 8
 
 **1\. Download the package**
 ```bash
-curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.0.8.pkg
+curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.0.9.pkg
 ```
 
 **2\. Install the package**
 ```bash
-pkg add -fM pfSense-pkg-wg-export-1.0.8.pkg
+pkg add -fM pfSense-pkg-wg-export-1.0.9.pkg
 ```
 
 _Note: The installer will automatically download the offline QR code and Chart libraries to your firewall during setup. New tabs will appear under VPN > WireGuard._
@@ -60,7 +74,7 @@ _Note: The installer will automatically download the offline QR code and Chart l
 
 To remove the package and clean up all integration files, run:
 ```bash
-pkg delete pfSense-pkg-wg-export-1.0.8.pkg
+pkg delete pfSense-pkg-wg-export
 ```
 
 ### 📊 Dashboard Widget
