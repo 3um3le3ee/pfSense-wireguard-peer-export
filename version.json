@@ -1,5 +1,5 @@
 {
-  "version": "1.0.81",
-  "url": "https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0.8/pfSense-pkg-wg-export-1.0.81.pkg",
-  "notes": "UPDATE TEST"
+  "version": "1.0.9",
+  "url": "https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.0.8/pfSense-pkg-wg-export-1.0.9.pkg",
+  "notes": "Version 1.0.9"
 }
