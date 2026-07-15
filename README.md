@@ -171,7 +171,7 @@ The suite automatically generates server keys, creates the interface, assigns IP
 
 ### 2. Add a New Peer
 
-1. Go to **VPN > WG Suite > Export**, click **Add New Peer** (or **Import .conf**)
+1. Go to **VPN > WG Suite > Export**, click **Add Peer** (or **Import .conf**)
 2. Pick a **Target Tunnel** — Endpoint, Public Key, and AllowedIPs fill in automatically
 3. Enter a **Peer Description** (becomes the config filename)
 4. **Auto-IP Discovery** calculates and suggests the next available IP in the tunnel subnet
