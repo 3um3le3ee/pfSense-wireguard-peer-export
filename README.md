@@ -60,12 +60,12 @@ To install the tool as a native pfSense package, SSH into your pfSense (option 8
 
 **1\. Download the package**
 ```bash
-curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.0.9.pkg
+curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.1.0.pkg
 ```
 
 **2\. Install the package**
 ```bash
-pkg add -fM pfSense-pkg-wg-export-1.0.9.pkg
+pkg add -fM pfSense-pkg-wg-export-1.1.0.pkg
 ```
 
 _Note: The installer will automatically download the offline QR code and Chart libraries to your firewall during setup. New tabs will appear under VPN > WireGuard._
@@ -79,7 +79,7 @@ pkg delete pfSense-pkg-wg-export
 
 ### 📊 Dashboard Widget
 
-Version 1.0.8 includes a streamlined native pfSense Dashboard widget for quick access.
+Version 1.1.0 includes a streamlined native pfSense Dashboard widget for quick access.
 
 **How to Enable:**
 
