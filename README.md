@@ -180,7 +180,6 @@ Found a vulnerability? Please report it privately. See [SECURITY.md](SECURITY.md
 - [Adopting and importing peers](docs/adopting-peers.md)
 - [Group policies](docs/group-policies.md)
 - [Node health endpoint](docs/health-endpoint.md)
-- [Translations](docs/translations.md)
 - [Changelog](CHANGELOG.md)
 
 ## Contributing
