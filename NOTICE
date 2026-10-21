@@ -1,0 +1,26 @@
+WG Suite - WireGuard Provisioning Package for pfSense
+Copyright 2026 3um3le3ee
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product bundles the following third-party software, each under its own
+licence:
+
+  Leaflet (leaflet.min.js)
+    Copyright (c) 2010-2024, Volodymyr Agafonkin
+    Copyright (c) 2010-2011, CloudMade
+    BSD 2-Clause License - https://github.com/Leaflet/Leaflet/blob/main/LICENSE
+
+  Chart.js (wg_chart.js)
+    Copyright (c) 2014-2024 Chart.js Contributors
+    MIT License - https://github.com/chartjs/Chart.js/blob/master/LICENSE.md
+
+  QR code generator (wg_qrcode.js)
+    See the licence notice at the top of wg_qrcode.js.
+
+Map tiles shown on the Map page are served by OpenStreetMap
+(c) OpenStreetMap contributors, https://www.openstreetmap.org/copyright
+
+pfSense is a trademark of Electric Sheep Fencing LLC (Netgate).
+WireGuard is a registered trademark of Jason A. Donenfeld.
+This project is not affiliated with or endorsed by either.
