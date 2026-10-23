@@ -99,14 +99,12 @@ WG Suite has no external PHP dependencies, and every JavaScript library it uses 
 From a shell on the firewall (SSH, option 8), or *Diagnostics > Command Prompt*:
 
 ```sh
-cd /tmp
-fetch https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.3.0/pfSense-pkg-wg-export-1.3.0.pkg
-fetch https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/download/v1.3.0/SHA256SUMS
-sha256sum -c SHA256SUMS
+# SSH into pfSense (option 8 for shell) and run:
+curl -LO https://github.com/3um3le3ee/pfSense-wireguard-peer-export/releases/latest/download/pfSense-pkg-wg-export-1.3.0.pkg
+
+# Install on the firewall
 pkg add -fM pfSense-pkg-wg-export-1.3.0.pkg
 ```
-
-`sha256sum -c` must print `OK` before you install. (If your system has no `sha256sum`, run `sha256 pfSense-pkg-wg-export-1.3.0.pkg` and compare the result with `SHA256SUMS` by eye.) WG Suite then appears under **VPN > WG Suite**.
 
 WG Suite is installed from the shell. It is not in Netgate's package repository, so it does not appear in *System > Package Manager*.
 
